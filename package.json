@@ -1,0 +1,23 @@
+{
+  "name": "nuxt-vuex",
+  "version": "1.0.0",
+  "description": "My lovely Nuxt.js project",
+  "author": "naka",
+  "private": true,
+  "scripts": {
+    "dev": "nuxt",
+    "build": "nuxt build",
+    "start": "nuxt start",
+    "generate": "nuxt generate"
+  },
+  "dependencies": {
+    "axios": "^0.27.2",
+    "cross-env": "^5.2.0",
+    "nuxt": "^2.3.4",
+    "vue-paginate": "^3.6.0",
+    "vuejs-paginate": "^2.1.0"
+  },
+  "devDependencies": {
+    "nodemon": "^1.18.9"
+  }
+}
