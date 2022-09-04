@@ -2,6 +2,7 @@
     <div>
         <pre>{{ info }}</pre>
         <p>{{ confirm }}</p>
+        <p>ddgit</p>
     </div>    
 </template>
 
