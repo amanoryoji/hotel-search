@@ -48,7 +48,6 @@
                     <p>{{ hotel.hotel[0].hotelBasicInfo.hotelName }} </p>
                     <img v-bind:src="hotel.hotel[0].hotelBasicInfo.hotelImageUrl">
                     <p>最安料金{{ hotel.hotel[0].hotelBasicInfo.hotelMinCharge }}円</p>
-                    <!-- <nuxt-link v-bind:to="{path: `detail`, query: { name: hotel }, props: true}"> -->
                     <nuxt-link v-bind:to="{path: `detail`, query: { name: encodeURIComponent(JSON.stringify(hotel.hotel[0].hotelBasicInfo))}}">
                         詳細を見る
                     </nuxt-link>
@@ -133,7 +132,7 @@ export default {
     methods: {
         click() {
             if(this.cities == ''){
-                alert('市町村を選択してください')
+                // alert('市町村を選択してください')
             };
             if(this.cities == 'sapporo') {
                 if(this.detailCity == ''){
@@ -145,19 +144,18 @@ export default {
                     applicationId: "1056638830656016957",
                     format: "json",
                     largeClassCode: "japan",
-                    middleClassCode: this.prefecture,
-                    smallClassCode: this.cities,
+                    // middleClassCode: this.prefecture,
+                    // smallClassCode: this.cities,
+                    middleClassCode: 'iwate',
+                    smallClassCode: 'morioka',
                     detailClassCode: this.detailCity,
                 }
             })
-                .then(response => {
-                    console.log(response);
-                    this.hotels.length = 0; //一度配列を削除
-                    this.hotels.push(response); //配列を入れ直す
-                })
-                .catch(error => {
-                    console.log(error);
-                });
+            .then(response => {
+                console.log(response);
+                this.hotels.length = 0; //一度配列を削除
+                this.hotels.push(response); //配列を入れ直す
+            })
         }, 
         clickCallback: function (pageNum) {
             this.currentPage = Number(pageNum);//currentPageを更新する、Number型で取得する
