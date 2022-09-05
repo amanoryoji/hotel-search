@@ -28,7 +28,11 @@
                 </select>
             </span>
 
-            <button v-on:click="click">検索する</button>
+            <!-- <button v-on:click="click">検索する</button> -->
+            <nuxt-link v-bind:to="{path: ``, query: {prefecture: this.prefecture, cities: this.cities, detailCity: this.detailCity}}">
+                検索する
+            </nuxt-link>
+
         </div>
 
         <div v-if="hotels != ''">
@@ -129,25 +133,24 @@ export default {
             this.detailCity = '';
         }
     },
-    methods: {
-        click() {
-            if(this.cities == ''){
-                // alert('市町村を選択してください')
-            };
-            if(this.cities == 'sapporo') {
-                if(this.detailCity == ''){
-                    alert('地区を選択してください')
-                }
-            }
+    mounted() {
+        this.prefectureInfo = this.$route.query.prefecture;
+        this.citiesInfo = this.$route.query.cities;
+        this.detailCityInfo = this.$route.query.detailCity;
+
+        if(this.prefectureInfo !== undefined && this.citiesInfo !== undefined) {
+            this.prefecture = this.prefectureInfo;
+            this.cities = this.citiesInfo;
+            console.log(this.prefecture);
+            console.log(this.cities);
+
             const response = axios.get(url, {
                 params: {
                     applicationId: "1056638830656016957",
                     format: "json",
                     largeClassCode: "japan",
-                    // middleClassCode: this.prefecture,
-                    // smallClassCode: this.cities,
-                    middleClassCode: 'iwate',
-                    smallClassCode: 'morioka',
+                    middleClassCode: this.prefecture,
+                    smallClassCode: this.cities,
                     detailClassCode: this.detailCity,
                 }
             })
@@ -156,7 +159,34 @@ export default {
                 this.hotels.length = 0; //一度配列を削除
                 this.hotels.push(response); //配列を入れ直す
             })
-        }, 
+        }
+    },
+    methods: {
+        // click() {
+        //     if(this.cities == ''){
+        //         // alert('市町村を選択してください')
+        //     };
+        //     if(this.cities == 'sapporo') {
+        //         if(this.detailCity == ''){
+        //             alert('地区を選択してください')
+        //         }
+        //     }
+        //     const response = axios.get(url, {
+        //         params: {
+        //             applicationId: "1056638830656016957",
+        //             format: "json",
+        //             largeClassCode: "japan",
+        //             middleClassCode: this.prefecture,
+        //             smallClassCode: this.cities,
+        //             detailClassCode: this.detailCity,
+        //         }
+        //     })
+        //     .then(response => {
+        //         console.log(response);
+        //         this.hotels.length = 0; //一度配列を削除
+        //         this.hotels.push(response); //配列を入れ直す
+        //     })
+        // }, 
         clickCallback: function (pageNum) {
             this.currentPage = Number(pageNum);//currentPageを更新する、Number型で取得する
         },
