@@ -48,7 +48,7 @@
                     <p>{{ hotel.hotel[0].hotelBasicInfo.hotelName }} </p>
                     <img v-bind:src="hotel.hotel[0].hotelBasicInfo.hotelImageUrl">
                     <p>最安料金{{ hotel.hotel[0].hotelBasicInfo.hotelMinCharge }}円</p>
-                    <nuxt-link v-bind:to="{path: `detail`, query: { name: encodeURIComponent(JSON.stringify(hotel.hotel[0].hotelBasicInfo))}}">
+                    <nuxt-link v-bind:to="{path: `detail`, query: { name: encodeURIComponent(JSON.stringify(hotel))}}">
                         詳細を見る
                     </nuxt-link>
                 </li>
@@ -59,7 +59,7 @@
 
 <script>
 const axios = require('axios');
-let url = process.env.baseUrl
+let url = process.env.baseUrl;
 
 export default {
     data: function () {
@@ -174,4 +174,3 @@ export default {
         object-fit: contain;
     }
 </style>
-

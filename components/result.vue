@@ -1,25 +1,19 @@
 <template>
     <div>
-        <pre>{{ info }}</pre>
-        <p>{{ confirm }}</p>
+        <pre>{{ hotelInfo }}</pre>
     </div>    
 </template>
-
 
 <script>
 export default{
     data: function(){
         return{
-            info: "",
+            hotelInfo: {},
         }
     },
-    created() {
-        this.info = decodeURIComponent(this.$route.query.name)
+    mounted() {
+        this.hotelInfo = JSON.parse(decodeURIComponent(this.$route.query.name));
+        console.log(this.hotelInfo);
     },
-    computed:{
-        confirm(){
-            console.log(this.info.hotelNo)
-        }
-    }
 }
 </script> 
