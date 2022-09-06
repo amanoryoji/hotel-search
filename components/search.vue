@@ -18,7 +18,7 @@
             </select>
 
             <span
-            v-if="cities == 'sapporo'">
+            v-if="cities == 'sapporo' || cities == 'tokyo'">
                 <label for="detailCity">地区</label>
                 <select id="detailCity" v-model="detailCity" v-bind:disabled="cities == ''">
                     <option value="">地区を選択</option>
@@ -31,6 +31,7 @@
             <span>
             {{ this.prefecture }}
             {{ this.cities }}
+            {{ this.detailCity }}
             </span>
 
             <button v-on:click="click">検索する</button>
@@ -122,23 +123,28 @@ export default {
         getPageCount: function() {
             let hotel = this.hotels[0].data.hotels;
             return Math.ceil(hotel.length / this.perPage);
-        }
+        },
     },
     watch: {
         prefecture: function(newVal,oldVal) {
-            this.detailCity = '';
+            this.detailCity = ''
             if(oldVal == '') {
                 if(this.$route.query.cities != undefined) {
                     this.cities = this.$route.query.cities
+                    this.detailCity = this.$route.query.detailCity
                 }
                
             } else if(oldVal != '') {
-                console.log('oldVal != ""')
                 this.cities = ''
+                this.detailCity = ''
             }
         },
-        cities: function(newVal) {
-            this.detailCity = '';
+        cities: function(newVal, oldVal) {
+           if(oldVal != '') {
+                console.log('detailCity: oldVal != ""')
+                this.detailCity = ''
+            }
+            
         },
     },
     
@@ -146,13 +152,18 @@ export default {
         // this.prefecture = this.$route.query.prefecture;
         // this.cities = this.$route.query.cities;
         // console.log(this.prefecture)
-
         // if(this.prefecture !== undefined && this.cities !== undefined) {
+        if(this.$route.query.number !== undefined) {
+            this.currentPage = this.$route.query.number
+        }
+
         if(this.$route.query.prefecture !== undefined && this.$route.query.cities !== undefined) {
             this.prefecture = this.$route.query.prefecture;
             this.cities = this.$route.query.cities;
+            this.detailCity = this.$route.query.detailCity;
             console.log('moutend： ' + this.prefecture);
             console.log('mounted： ' + this.cities);
+            console.log('mouted：　' + this.detailCity);
 
             const response = axios.get(this.$store.state.url, {
                 params: {
@@ -172,16 +183,19 @@ export default {
     },
     methods: {
         click() {
-            if(this.cities == ''){
+            if(this.prefecture == '') {
+                alert('県を入力してください')
+            };
+            if(this.prefecture != '' && this.cities == ''){
                 alert('市町村を選択してください')
             };
-            if(this.cities == 'sapporo') {
+            if(this.cities == 'sapporo' || this.cities == 'tokyo') {
                 if(this.detailCity == ''){
                     alert('地区を選択してください')
                 }
             };
             if(this.cities !== '') {
-                this.$router.push({ path: ``,query:{ prefecture: this.prefecture, cities: this.cities}})
+                this.$router.push({ path: ``,query:{ prefecture: this.prefecture, cities: this.cities, detailCity: this.detailCity}})
                 const response = axios.get(this.$store.state.url, {
                     params: {
                         applicationId: "1056638830656016957",
@@ -194,8 +208,8 @@ export default {
                 })
                 .then(response => {
                     console.log(response);
-                    this.hotels.length = 0; //一度配列を削除
-                    this.hotels.push(response); //配列を入れ直す
+                    this.hotels.length = 0; 
+                    this.hotels.push(response); 
                 })
                 .catch(error => {
                     alert('検索結果がありません。');
@@ -204,6 +218,7 @@ export default {
         }, 
         clickCallback: function (pageNum) {
             this.currentPage = Number(pageNum);//currentPageを更新する、Number型で取得する
+            this.$router.push({ path: ``,query:{ prefecture:this.prefecture, cities:this.cities, detailCity:this.detailCity, number: this.currentPage}})
         },
     },
 }
