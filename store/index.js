@@ -1,5 +1,8 @@
+const axios = require('axios');
+
 export const state = function(e) {
     return {
+        url: process.env.baseUrl,
         pref: [
             {"no":"hokkaido","name":"\u5317\u6d77\u9053"},
             {"no":"aomori","name":"\u9752\u68ee\u770c"},
@@ -68,8 +71,6 @@ export const state = function(e) {
             {"no":"minami","name":"南会津・下郷・只見・檜枝岐","pref":"hukushima"},
             {"no":"nakadori","name":"白河・須賀川","pref":"hukushima"},
             {"no":"hamadori","name":"いわき・南相馬・相馬","pref":"hukushima"},
-
-            
         ],
         detail: [
             {"no":"A","name":"札幌・新札幌・琴似","city":"sapporo",},
@@ -80,8 +81,11 @@ export const state = function(e) {
 }
 
 export const mutations = {
-   
+    getData() {
+        
+    }
 }
 
 export const actions = {
+    
 }
