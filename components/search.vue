@@ -141,21 +141,54 @@ export default {
         },
         cities: function(newVal, oldVal) {
            if(oldVal != '') {
-                console.log('detailCity: oldVal != ""')
                 this.detailCity = ''
             }
             
         },
+        $route() {
+            // this.click()
+            // let prefecture = this.$route.query.prefecture;
+            // this.cities = this.$route.query.cities;
+            // this.currentPage = this.$route.query.currentPage;
+
+            // // if(this.currentPage != undefined) {
+            // //     this.currentPage = this.$route.query.currentPage;
+            // //     console.log(this.currentPage);
+            // // } else if ( this.currentPage == undefined ) {
+            // //     this.currentPage = 1;
+            // //     console.log(this.currentPage)
+            // // }
+
+            // let current = this.currentPage * this.perPage;
+            // let start = current - this.perPage;
+            // let hotel = this.hotels[0].data.hotels
+            // hotel.slice(start,current)
+
+            // const response = axios.get(this.$store.state.url, {
+            //     params: {
+            //         applicationId: "1056638830656016957",
+            //         format: "json",
+            //         largeClassCode: "japan",
+            //         middleClassCode: this.prefecture,
+            //         smallClassCode: this.cities,
+            //         detailClassCode: this.detailCity,
+            //     }
+            // })
+            // .then(response => {
+            //     this.hotels.push(response);
+            // })
+        }
     },
-    
     mounted() {
         // this.prefecture = this.$route.query.prefecture;
         // this.cities = this.$route.query.cities;
         // console.log(this.prefecture)
         // if(this.prefecture !== undefined && this.cities !== undefined) {
-        if(this.$route.query.number !== undefined) {
-            this.currentPage = this.$route.query.number
-        }
+
+        // if(this.$route.query.currentPage !== undefined) {
+        //     console.log('undefiendではない')
+        //     this.currentPage = this.$route.query.currentPage
+        // }
 
         if(this.$route.query.prefecture !== undefined && this.$route.query.cities !== undefined) {
             this.prefecture = this.$route.query.prefecture;
@@ -183,6 +216,7 @@ export default {
     },
     methods: {
         click() {
+            this.currentPage = 1;
             if(this.prefecture == '') {
                 alert('県を入力してください')
             };
@@ -218,13 +252,13 @@ export default {
         }, 
         clickCallback: function (pageNum) {
             this.currentPage = Number(pageNum);//currentPageを更新する、Number型で取得する
-            this.$router.push({ path: ``,query:{ prefecture:this.prefecture, cities:this.cities, detailCity:this.detailCity, number: this.currentPage}})
+            // this.$router.push({ path: ``,query:{ prefecture:this.prefecture, cities:this.cities, detailCity:this.detailCity, currentPage: this.currentPage}})
         },
     },
 }
 </script>
 
-<style scoped>  
+<style>  
     a{
         text-decoration: none;
     }
@@ -232,5 +266,8 @@ export default {
         width: 300px;
         height: 169px;
         object-fit: contain;
+    }
+    li.active{
+        color: red;
     }
 </style>
