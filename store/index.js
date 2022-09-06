@@ -4,13 +4,27 @@ export const state = function(e) {
     return {
         url: process.env.baseUrl,
         pref: [
-            {"no":"hokkaido","name":"\u5317\u6d77\u9053"},
-            {"no":"aomori","name":"\u9752\u68ee\u770c"},
-            {"no":"iwate","name":"\u5ca9\u624b\u770c"},
-            {"no":"miyagi","name":"\u5bae\u57ce\u770c"},
-            {"no":"akita","name":"\u79cb\u7530\u770c"},
-            {"no":"yamagata","name":"\u5c71\u5f62\u770c"},
-            {"no":"hukushima","name":"\u798f\u5cf6\u770c"}
+            {"no":"hokkaido","name":"北海道"},
+
+            {"no":"aomori","name":"青森県"},
+            {"no":"iwate","name":"岩手県"},
+            {"no":"miyagi","name":"宮城県"},
+            {"no":"akita","name":"秋田県"},
+            {"no":"yamagata","name":"山形県"},
+            {"no":"hukushima","name":"福島県"},
+
+            {"no":"ibaragi","name":"茨城県"},
+            {"no":"tochigi","name":"栃木県"},
+            {"no":"gunma","name":"群馬県"},
+            {"no":"saitama","name":"埼玉県"},
+            {"no":"tiba","name":"千葉県"},
+            {"no":"tokyo","name":"東京都"},
+            {"no":"kanagawa","name":"神奈川県"},
+            
+            {"no":"niigata","name":"新潟県"},
+            {"no":"yamanasi","name":"山梨県"},
+            {"no":"nagano","name":"長野県"},
+
         ],
         city: [
             {"no":"sapporo","name":"札幌","pref":"hokkaido"},
@@ -71,21 +85,126 @@ export const state = function(e) {
             {"no":"minami","name":"南会津・下郷・只見・檜枝岐","pref":"hukushima"},
             {"no":"nakadori","name":"白河・須賀川","pref":"hukushima"},
             {"no":"hamadori","name":"いわき・南相馬・相馬","pref":"hukushima"},
+
+            {"no":"mito","name":"水戸・笠間","pref":"ibaragi"},
+            {"no":"oarai","name":"大洗・ひたちなか","pref":"ibaragi"},
+            {"no":"hitachi","name":"日立・北茨城・奥久慈","pref":"ibaragi"},
+            {"no":"tsukuba","name":"つくば・土浦・取手","pref":"ibaragi"},
+            {"no":"yuki","name":"古河・結城・筑西・常総","pref":"ibaragi"},
+            {"no":"kashima","name":"鹿嶋・神栖・潮来・北浦","pref":"ibaragi"},
+            
+            {"no":"utsunomiya","name":"宇都宮・さくら","pref":"tochigi"},
+            {"no":"nikko","name":"日光・中禅寺湖・奥日光・今市","pref":"tochigi"},
+            {"no":"kinugawa","name":"鬼怒川・川治・湯西川・川俣","pref":"tochigi"},
+            {"no":"nasu","name":"那須・板室・黒磯","pref":"tochigi"},
+            {"no":"shiobara","name":"塩原・矢板・大田原・西那須野","pref":"tochigi"},
+            {"no":"mashiko","name":"真岡・益子・茂木","pref":"tochigi"},
+            {"no":"koyama","name":"小山・足利・佐野・栃木","pref":"tochigi"},
+
+            {"no":"maebashi","name":"前橋・赤城","pref":"gunma"},
+            {"no":"ikaho","name":"伊香保温泉・渋川","pref":"gunma"},
+            {"no":"manza","name":"万座･嬬恋･北軽井沢","pref":"gunma"},
+            {"no":"kusatsu","name":"草津温泉・白根","pref":"gunma"},
+            {"no":"shimaonsen","name":"四万温泉","pref":"gunma"},
+            {"no":"numata","name":"水上・猿ヶ京・沼田","pref":"gunma"},
+            {"no":"oze","name":"尾瀬・丸沼","pref":"gunma"},
+            {"no":"kiryu","name":"伊勢崎・太田・館林・桐生","pref":"gunma"},
+            {"no":"takasaki","name":"高崎","pref":"gunma"},
+            {"no":"fujioka","name":"富岡・藤岡・安中・磯部温泉","pref":"gunma"},
+
+            {"no":"saitama","name":"大宮・浦和・川口・上尾","pref":"saitama"},
+            {"no":"kasukabe","name":"草加・越谷・春日部・羽生","pref":"saitama"},
+            {"no":"kumagaya","name":"熊谷・深谷・本庄","pref":"saitama"},
+            {"no":"kawagoe","name":"川越・東松山・志木・和光","pref":"saitama"},
+            {"no":"tokorozawa","name":"所沢・狭山・飯能","pref":"saitama"},
+            {"no":"chichibu","name":"秩父・長瀞","pref":"saitama"},
+
+            {"no":"chiba","name":"千葉","pref":"tiba"},
+            {"no":"keiyo","name":"舞浜・浦安・船橋・幕張","pref":"tiba"},
+            {"no":"kashiwa","name":"松戸・柏","pref":"tiba"},
+            {"no":"narita","name":"成田空港・佐倉","pref":"tiba"},
+            {"no":"choshi","name":"銚子・旭・九十九里・東金・茂原","pref":"tiba"},
+            {"no":"sotobo","name":"鴨川・勝浦・御宿・養老渓谷","pref":"tiba"},
+            {"no":"tateyama","name":"南房総・館山・白浜・千倉","pref":"tiba"},
+            {"no":"uchibo","name":"市原・木更津・君津・富津・鋸南","pref":"tiba"},
+            
+            {"no":"tokyo","name":"東京２３区内","pref":"tokyo"},
+            {"no":"nishi","name":"立川・八王子・町田・府中・吉祥寺","pref":"tokyo"},
+            {"no":"okutama","name":"奥多摩・青梅・羽村","pref":"tokyo"},
+            {"no":"ritou","name":"八丈島","pref":"tokyo"},
+            {"no":"oshima","name":"大島","pref":"tokyo"},
+            {"no":"kouzu","name":"神津島・新島・式根島","pref":"tokyo"},
+            {"no":"miyake","name":"三宅島","pref":"tokyo"},
+            {"no":"Ogasawara","name":"小笠原諸島","pref":"tokyo"},
+
+            {"no":"yokohama","name":"横浜","pref":"kanagawa"},
+            {"no":"kawasaki","name":"川崎","pref":"kanagawa"},
+            {"no":"hakone","name":"箱根","pref":"kanagawa"},
+            {"no":"odawara","name":"小田原","pref":"kanagawa"},
+            {"no":"yugawara","name":"湯河原・真鶴","pref":"kanagawa"},
+            {"no":"sagamiko","name":"相模湖・丹沢","pref":"kanagawa"},
+            {"no":"sagamihara","name":"大和・相模原・町田西部","pref":"kanagawa"},
+            {"no":"ebina","name":"厚木・海老名・伊勢原","pref":"kanagawa"},
+            {"no":"shonan","name":"湘南・鎌倉・江ノ島・藤沢・平塚","pref":"kanagawa"},
+            {"no":"miura","name":"横須賀・三浦","pref":"kanagawa"},
+            
+            {"no":"niigata","name":"新潟","pref":"niigata"},
+            {"no":"kaetsu","name":"月岡・瀬波・咲花","pref":"niigata"},
+            {"no":"kita","name":"長岡・燕三条・柏崎・弥彦・岩室・寺泊","pref":"niigata"},
+            {"no":"minami","name":"魚沼・十日町・津南・六日町・大湯","pref":"niigata"},
+            {"no":"yuzawa","name":"越後湯沢・苗場","pref":"niigata"},
+            {"no":"joetsu","name":"上越・糸魚川・妙高","pref":"niigata"},
+            {"no":"sado","name":"佐渡","pref":"niigata"},
+
+            {"no":"kofu","name":"甲府・湯村・昇仙峡","pref":"yamanasi"},
+            {"no":"yamanashi","name":"山梨・石和・勝沼・塩山","pref":"yamanasi"},
+            {"no":"otsuki","name":"大月・都留・道志渓谷","pref":"yamanasi"},
+            {"no":"yamanakako","name":"山中湖・忍野","pref":"yamanasi"},
+            {"no":"kawaguchiko","name":"河口湖・富士吉田・本栖湖・西湖・精進湖","pref":"yamanasi"},
+            {"no":"minobu","name":"下部・身延・早川","pref":"yamanasi"},
+            {"no":"nirasaki","name":"韮崎・南アルプス","pref":"yamanasi"},
+            {"no":"kiyosato","name":"八ヶ岳・小淵沢・清里・大泉","pref":"yamanasi"},
+
+            {"no":"nagano","name":"長野・小布施・信州高山・戸隠・飯綱","pref":"nagano"},
+            {"no":"madara","name":"斑尾・飯山・信濃町・野尻湖・黒姫","pref":"nagano"},
+            {"no":"nozawa","name":"野沢温泉・木島平・秋山郷","pref":"nagano"},
+            {"no":"shiga","name":"志賀高原･湯田中･渋","pref":"nagano"},
+            {"no":"ueda","name":"上田・別所・鹿教湯","pref":"nagano"},
+            {"no":"chikuma","name":"戸倉上山田・千曲","pref":"nagano"},
+            {"no":"sugadaira","name":"菅平・峰の原","pref":"nagano"},
+            {"no":"karui","name":"軽井沢・佐久･小諸","pref":"nagano"},
+            {"no":"","name":"八ヶ岳・野辺山・富士見・原村","pref":"nagano"},
+            {"no":"kirigamine","name":"蓼科・白樺湖・霧ヶ峰・車山","pref":"nagano"},
+            {"no":"suwa","name":"諏訪湖","pref":"nagano"},
+            {"no":"ina","name":"伊那・駒ヶ根・飯田・昼神","pref":"nagano"},
+            {"no":"kiso","name":"木曽","pref":"nagano"},
+            {"no":"matsumo","name":"松本・塩尻・浅間温泉・美ヶ原温泉","pref":"nagano"},
+            {"no":"kamiko","name":"上高地・乗鞍・白骨","pref":"nagano"},
+            {"no":"hotaka","name":"安曇野・穂高・大町・豊科","pref":"nagano"},
+            {"no":"hakuba","name":"白馬・八方尾根・栂池高原・小谷","pref":"nagano"},
+
+            {"no":"","name":"","pref":""},
         ],
         detail: [
             {"no":"A","name":"札幌・新札幌・琴似","city":"sapporo",},
             {"no":"B","name":"大通公園・時計台・狸小路","city":"sapporo"},
-            {"no":"C","name":"すすきの・中島公園","city":"sapporo"}
+            {"no":"C","name":"すすきの・中島公園","city":"sapporo"},
+            
+            {"no":"A","name":"東京駅・銀座・秋葉原・東陽町・葛西","city":"tokyo"},
+            {"no":"B","name":"新橋・汐留・浜松町・お台場","city":"tokyo"},
+            {"no":"C","name":"赤坂・六本木・霞ヶ関・永田町","city":"tokyo"},
+            {"no":"D","name":"渋谷・恵比寿・目黒・二子玉川","city":"tokyo"},
+            {"no":"E","name":"品川・大井町・蒲田・羽田空港","city":"tokyo"},
+            {"no":"F","name":"新宿・中野・荻窪・四谷","city":"tokyo"},
+            {"no":"G","name":"池袋・赤羽・巣鴨・大塚","city":"tokyo"},
+            {"no":"H","name":"東京ドーム・飯田橋・御茶ノ水","city":"tokyo"},
+            {"no":"I","name":"上野・浅草・錦糸町・新小岩・北千住","city":"tokyo"},
         ],
     }
 }
 
 export const mutations = {
-    getData() {
-        
-    }
 }
 
 export const actions = {
-    
 }
