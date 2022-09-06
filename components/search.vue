@@ -128,15 +128,18 @@ export default {
         prefecture: function(newVal,oldVal) {
             this.detailCity = '';
             if(oldVal == '') {
-                this.cities = this.$route.query.cities
+                if(this.$route.query.cities != undefined) {
+                    this.cities = this.$route.query.cities
+                }
+               
             } else if(oldVal != '') {
+                console.log('oldVal != ""')
                 this.cities = ''
             }
         },
         cities: function(newVal) {
             this.detailCity = '';
         },
-
     },
     
     mounted() {
@@ -193,6 +196,9 @@ export default {
                     console.log(response);
                     this.hotels.length = 0; //一度配列を削除
                     this.hotels.push(response); //配列を入れ直す
+                })
+                .catch(error => {
+                    alert('検索結果がありません。');
                 })
             }
         }, 
