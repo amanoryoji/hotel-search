@@ -125,20 +125,29 @@ export default {
         }
     },
     watch: {
-        prefecture: function(newVal) {
-            this.cities = ''
+        prefecture: function(newVal,oldVal) {
             this.detailCity = '';
+            if(oldVal == '') {
+                this.cities = this.$route.query.cities
+            } else if(oldVal != '') {
+                this.cities = ''
+            }
         },
         cities: function(newVal) {
             this.detailCity = '';
         },
 
     },
+    
     mounted() {
-        this.prefecture = this.$route.query.prefecture;
-        this.cities = this.$route.query.cities;
+        // this.prefecture = this.$route.query.prefecture;
+        // this.cities = this.$route.query.cities;
+        // console.log(this.prefecture)
 
-        if(this.prefecture !== undefined && this.cities !== undefined) {
+        // if(this.prefecture !== undefined && this.cities !== undefined) {
+        if(this.$route.query.prefecture !== undefined && this.$route.query.cities !== undefined) {
+            this.prefecture = this.$route.query.prefecture;
+            this.cities = this.$route.query.cities;
             console.log('moutend： ' + this.prefecture);
             console.log('mounted： ' + this.cities);
 
@@ -168,22 +177,24 @@ export default {
                     alert('地区を選択してください')
                 }
             };
-            this.$router.push({ path: ``,query:{ prefecture: this.prefecture, cities: this.cities}})
-            const response = axios.get(this.$store.state.url, {
-                params: {
-                    applicationId: "1056638830656016957",
-                    format: "json",
-                    largeClassCode: "japan",
-                    middleClassCode: this.prefecture,
-                    smallClassCode: this.cities,
-                    detailClassCode: this.detailCity,
-                }
-            })
-            .then(response => {
-                console.log(response);
-                this.hotels.length = 0; //一度配列を削除
-                this.hotels.push(response); //配列を入れ直す
-            })
+            if(this.cities !== '') {
+                this.$router.push({ path: ``,query:{ prefecture: this.prefecture, cities: this.cities}})
+                const response = axios.get(this.$store.state.url, {
+                    params: {
+                        applicationId: "1056638830656016957",
+                        format: "json",
+                        largeClassCode: "japan",
+                        middleClassCode: this.prefecture,
+                        smallClassCode: this.cities,
+                        detailClassCode: this.detailCity,
+                    }
+                })
+                .then(response => {
+                    console.log(response);
+                    this.hotels.length = 0; //一度配列を削除
+                    this.hotels.push(response); //配列を入れ直す
+                })
+            }
         }, 
         clickCallback: function (pageNum) {
             this.currentPage = Number(pageNum);//currentPageを更新する、Number型で取得する
