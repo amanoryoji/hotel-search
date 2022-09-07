@@ -150,8 +150,9 @@ export default {
             this.prefecture = this.$route.query.prefecture;
             this.cities = this.$route.query.cities;
             this.detailCity = this.$route.query.detailCity;
-            this.currentPage = Number(this.$route.query.currentPage);
-        
+            if(this.$route.query.currentPage != undefined) {
+                this.currentPage = Number(this.$route.query.currentPage);
+            }
             axios.get(this.$store.state.url, {
                 params: {
                     applicationId: "1056638830656016957",
