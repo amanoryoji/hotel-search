@@ -45,8 +45,8 @@
                 ></paginate>
             </no-ssr> 
 
-            <ul style="margin-top:30px;width: 1000px;display: flex;flex-wrap: wrap;">
-                <li v-for="hotel in getHotels" style="width: 33%;">
+            <ul class="hotelContents">
+                <li v-for="hotel in getHotels">
                     <p>{{ hotel.hotel[0].hotelBasicInfo.hotelName }} </p>
                     <img v-bind:src="hotel.hotel[0].hotelBasicInfo.hotelImageUrl">
                     <p>最安料金{{ hotel.hotel[0].hotelBasicInfo.hotelMinCharge }}円</p>
@@ -61,8 +61,10 @@
 
 <script>
 const axios = require('axios');
+import HotelCard from './HotelCard.vue'
 
 export default {
+    components:{HotelCard},
     data: function () {
         return {
             hotels: [],
@@ -161,11 +163,10 @@ export default {
                 }
             })
             .then(response => {
-                console.log(response);
                 this.hotels.push(response);
             })
             .catch(error => {
-                console.log('エラーが発生しました。')
+                alert('エラーが発生しました。')
             })
         }
     },
@@ -199,7 +200,6 @@ export default {
                     }
                 })
                 .then(response => {
-                    console.log(response);
                     this.hotels.length = 0; 
                     this.hotels.push(response); 
                 })
@@ -222,8 +222,16 @@ export default {
         height: 169px;
         object-fit: contain;
     }
-
     li.active{
         color: red;
+    }
+    ul.hotelContents{
+        display: flex;
+        flex-wrap: wrap;
+        width: 1000px;
+        margin-top:30px;
+    }
+    ul.hotelContents li{
+        width: 33%;
     }
 </style>
