@@ -39,18 +39,20 @@
 
         <div v-if="hotels != ''">
             <h3>検索件数：{{ hotels[0].data.hotels.length }}件</h3>
-
+            {{ currentPage }}
             <no-ssr>
                 <paginate
+                v-model="currentPage"
                 :page-count="getPageCount"
                 :click-handler="clickCallback"
                 :prev-text="'<'"
                 :next-text="'>'"
+                :hide-prev-next=true
                 ></paginate>
             </no-ssr> 
 
-            <ul style="margin-top:30px;">
-                <li v-for="hotel in getHotels" style="margin-bottom:20px">
+            <ul style="margin-top:30px;width: 1000px;display: flex;flex-wrap: wrap;">
+                <li v-for="hotel in getHotels" style="width: 33%;">
                     <p>{{ hotel.hotel[0].hotelBasicInfo.hotelName }} </p>
                     <img v-bind:src="hotel.hotel[0].hotelBasicInfo.hotelImageUrl">
                     <p>最安料金{{ hotel.hotel[0].hotelBasicInfo.hotelMinCharge }}円</p>
@@ -73,6 +75,7 @@ export default {
             prefecture: "",
             cities: "",
             detailCity: "",
+            page:1,
             perPage: 10,
             currentPage: 1,
             pref: this.$store.state.pref,
@@ -121,7 +124,7 @@ export default {
             return hotel.slice(start,current)
         },
         getPageCount: function() {
-            let hotel = this.hotels[0].data.hotels;
+            let hotel = this.hotels[0].data.hotels;//30
             return Math.ceil(hotel.length / this.perPage);
         },
     },
@@ -189,16 +192,13 @@ export default {
         //     console.log('undefiendではない')
         //     this.currentPage = this.$route.query.currentPage
         // }
-
         if(this.$route.query.prefecture !== undefined && this.$route.query.cities !== undefined) {
             this.prefecture = this.$route.query.prefecture;
             this.cities = this.$route.query.cities;
             this.detailCity = this.$route.query.detailCity;
-            console.log('moutend： ' + this.prefecture);
-            console.log('mounted： ' + this.cities);
-            console.log('mouted：　' + this.detailCity);
-
-            const response = axios.get(this.$store.state.url, {
+            this.currentPage = Number(this.$route.query.currentPage);
+        
+            response = axios.get(this.$store.state.url, {
                 params: {
                     applicationId: "1056638830656016957",
                     format: "json",
@@ -212,11 +212,17 @@ export default {
                 console.log(response);
                 this.hotels.push(response);
             })
+            .catch(error => {
+                console.log('エラーが発生しました。')
+            })
         }
     },
     methods: {
-        click() {
-            this.currentPage = 1;
+        clickCallback: function (pageNum) {
+            this.currentPage = Number(pageNum);//currentPageを更新する、Number型で取得する
+            this.$router.push({ path: ``,query:{ prefecture:this.prefecture, cities:this.cities, detailCity:this.detailCity, currentPage: this.currentPage}})
+        },
+        click() { 
             if(this.prefecture == '') {
                 alert('県を入力してください')
             };
@@ -230,7 +236,7 @@ export default {
             };
             if(this.cities !== '') {
                 this.$router.push({ path: ``,query:{ prefecture: this.prefecture, cities: this.cities, detailCity: this.detailCity}})
-                const response = axios.get(this.$store.state.url, {
+                response = axios.get(this.$store.state.url, {
                     params: {
                         applicationId: "1056638830656016957",
                         format: "json",
@@ -248,12 +254,9 @@ export default {
                 .catch(error => {
                     alert('検索結果がありません。');
                 })
+                this.currentPage = 1;
             }
         }, 
-        clickCallback: function (pageNum) {
-            this.currentPage = Number(pageNum);//currentPageを更新する、Number型で取得する
-            // this.$router.push({ path: ``,query:{ prefecture:this.prefecture, cities:this.cities, detailCity:this.detailCity, currentPage: this.currentPage}})
-        },
     },
 }
 </script>
