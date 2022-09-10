@@ -231,15 +231,9 @@ export default {
     a{
         text-decoration: none;
     }
-    img{
-        width: 300px;
-        height: 169px;
-        object-fit: contain;
-    }
     li{
         list-style: none;
     }
-
     .button{
         border: none;
         cursor: pointer;
@@ -376,6 +370,12 @@ export default {
                         
                         &:last-of-type{
                             margin-bottom: 0;
+                        }
+
+                        img{
+                            width: 300px;
+                            height: 169px;
+                            object-fit: contain;
                         }
 
                         .button{
