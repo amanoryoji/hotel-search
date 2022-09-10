@@ -229,8 +229,9 @@ export default {
         flex-wrap: wrap;
         width: 1000px;
         margin-top:30px;
-    }
-    ul.hotelContents li{
-        width: 33%;
+
+        li{
+            width: 33%;
+        }
     }
 </style>
