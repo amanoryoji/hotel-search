@@ -7,9 +7,7 @@
 <script>
 import Result from "../../components/result.vue";
 
-export default{
+export default{ 
     components: {Result}
 }
-
-
 </script>

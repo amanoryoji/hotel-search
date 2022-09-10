@@ -61,10 +61,8 @@
 
 <script>
 const axios = require('axios');
-import HotelCard from './HotelCard.vue'
 
 export default {
-    components:{HotelCard},
     data: function () {
         return {
             hotels: [],
@@ -214,7 +212,7 @@ export default {
 }
 </script>
 
-<style>  
+<style lang="scss">  
     a{
         text-decoration: none;
     }

@@ -5,7 +5,7 @@
 </template>
 
 <script>
-export default{
+export default {
     data: function(){
         return{
             hotelInfo: {},
@@ -13,7 +13,6 @@ export default{
     },
     mounted() {
         this.hotelInfo = JSON.parse(decodeURIComponent(this.$route.query.name));
-        console.log(this.hotelInfo);
     },
 }
 </script> 
