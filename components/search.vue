@@ -4,7 +4,8 @@
             <h3 class="top-title">あなたの旅をよりシンプルに。<br>全国各地の宿泊施設を検索しましょう！</h3>
 
             <div class="search-container__box">
-                <h4 class="search-container__box-title">条件から検索</h4>
+                <h4 class="search-container__box-title">目的地を選択</h4>
+
                 <div class="search-input">
                     <label for="prefecture">都道府県<span class="required">必須</span></label>
                     <select id="pref" v-model="prefecture">
@@ -16,7 +17,7 @@
                 </div>
 
                 <div class="search-input">
-                    <label for="city">市町村</label>
+                    <label for="city">市町村<span class="required">必須</span></label>
                     <select id="city" v-model="cities" v-bind:disabled="prefecture == ''">
                         <option value="">市町村を選択</option>
                         <option v-for="(item, index) in getCity" v-bind:value="item.no">
@@ -27,7 +28,7 @@
 
                 <div
                 v-if="cities == 'sapporo' || cities == 'tokyo'" class="search-input">
-                    <label for="detailCity">地区</label>
+                    <label for="detailCity">地区<span class="required">必須</span></label>
                     <select id="detailCity" v-model="detailCity" v-bind:disabled="cities == ''">
                         <option value="">地区を選択</option>
                         <option v-for="(item, index) in getDetailCity" v-bind:value="item.no">
@@ -36,12 +37,14 @@
                     </select>
                 </div>
 
-                <button v-on:click="click" class="search-button">検索する</button>
+                <button v-on:click="click" class="button search-button">検索する</button>
             </div>
         </div>
 
-        <div v-if="hotels != ''" class="search-container__result">
-            <h4 class="search-container__result-count">検索件数：<span>{{ hotels[0].data.hotels.length }}</span>件</h4>
+        <div v-if="hotels != ''" class="search-container__result" id="result">
+            <h4 class="search-container__result-count">
+                検索件数：<span>{{ hotels[0].data.hotels.length }}</span>件
+            </h4>
 
             <no-ssr>
                 <paginate
@@ -53,14 +56,15 @@
                 :hide-prev-next=true
                 :container-class="'pagination'"
                 ></paginate>
-            </no-ssr> 
+            </no-ssr>
 
             <ul class="hotelContents">
                 <li v-for="hotel in getHotels">
                     <p>{{ hotel.hotel[0].hotelBasicInfo.hotelName }} </p>
                     <img v-bind:src="hotel.hotel[0].hotelBasicInfo.hotelImageUrl">
-                    <p>1部屋1泊あたりの最安値：{{ hotel.hotel[0].hotelBasicInfo.hotelMinCharge }}円</p>
-                    <nuxt-link v-bind:to="{path: `detail`, query: { name: encodeURIComponent(JSON.stringify(hotel))}}">
+                    <p>1泊あたりの最安値：{{ hotel.hotel[0].hotelBasicInfo.hotelMinCharge }}円</p>
+                    <p>レビュー平均：{{ hotel.hotel[0].hotelBasicInfo.reviewAverage }}</p>
+                    <nuxt-link v-bind:to="{path: `detail`, query: { name: encodeURIComponent(JSON.stringify(hotel))}}" class="button">
                         詳細を見る
                     </nuxt-link>
                 </li>
@@ -184,7 +188,8 @@ export default {
             this.currentPage = Number(pageNum);//currentPageを更新する、Number型で取得する
             this.$router.push({ path: ``,query:{ prefecture:this.prefecture, cities:this.cities, detailCity:this.detailCity, currentPage: this.currentPage}})
         },
-        click() { 
+        click() {
+
             if(this.prefecture == '') {
                 alert('県を入力してください')
             };
@@ -234,11 +239,8 @@ export default {
     li{
         list-style: none;
     }
-    li.active{
-        color: red;
-    }
 
-    button{
+    .button{
         border: none;
         cursor: pointer;
         outline: none;
@@ -272,7 +274,7 @@ export default {
                 margin-bottom: 50px;
                 text-align: center;
                 color: #fff;
-                text-shadow: 0 2px 6px #333;
+                text-shadow: 0 3px 6px #000;
                 font-size: 40px;
             }
 
@@ -293,11 +295,22 @@ export default {
                     label{
                         display: block;
                         margin-bottom: 20px;
+
+                        span.required{
+                            width: 50px;
+                            margin-left: 10px;
+                            color: #d94f5d;
+                            border: 1px solid #d94f5d;
+                            border-radius: 10px;
+                            padding: 2px 8px;
+                            font-weight: 700;
+                        }
                     }
 
                     select{
                         width: 100%;
-                        padding: 10px 0;
+                        padding: 10px 10px 10px 10px;
+                        box-sizing: border-box;
                     }
                 }
 
@@ -313,34 +326,62 @@ export default {
                 &-count{
                     margin-bottom: 40px;
                     text-align: center;
+                    font-size: 30px;
+
+                    span{
+                        font-size: 40px;
+                        color: #c00;
+                    }
                 }
 
                 .pagination{
                     display: flex;
                     justify-content: center;
-                    margin-bottom: 40px;
+                    margin-bottom: 60px;
 
                     li{
                         margin-right: 30px;
+                        padding: 0 10px;
+                        color: #95999e;
+
+                        &.active{
+                            color: #c00;
+                            
+                            a{
+                                font-weight: 700;
+                            }
+                        }
 
                         &:last-of-type{
                             margin-right: 0;
+                        }
+
+                        a{
+                            font-size: 23px;
                         }
                     }
                 }
                 
                 ul.hotelContents{
                     display: flex;
+                    justify-content: space-between;
                     flex-wrap: wrap;
                     width: 90%;
                     margin: 0 auto;
 
                     li{
-                        width: 33.3%;
-                        margin-bottom: 30px;
+                        width: 30%;
+                        margin-bottom: 40px;
+                        text-align: center;
                         
                         &:last-of-type{
                             margin-bottom: 0;
+                        }
+
+                        .button{
+                            width: 40%;
+                            padding: 5px 0;
+                            font-size: 1rem;
                         }
                     }
                 }

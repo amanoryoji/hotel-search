@@ -1,7 +1,6 @@
 <template>
   <section class="container">
     <div id="#app">
-      <h1>楽天トラベル検索一覧</h1>
       <Search></Search>
     </div>
   </section>
