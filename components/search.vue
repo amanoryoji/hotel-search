@@ -37,6 +37,26 @@
                     </select>
                 </div>
 
+                <div class="search-input">
+                    <label for="chechIn">チェックイン日付</label>
+                    <no-ssr>
+                        <datePicker
+                        v-model="checkIn"
+                        :format="DatePickerFormat"
+                        ></datePicker>
+                    </no-ssr>
+                </div>
+
+                <div class="search-input">
+                    <label for="checkout">チェックアウト日付</label>
+                    <no-ssr>
+                        <datePicker
+                        v-model="checkOut"
+                        :format="DatePickerFormat"
+                        ></datePicker>
+                    </no-ssr>
+                </div>
+
                 <button v-on:click="click" class="button search-button">検索する</button>
             </div>
         </div>
@@ -75,6 +95,7 @@
 
 <script>
 const axios = require('axios');
+import moment from 'moment';
 
 export default {
     data: function () {
@@ -89,6 +110,9 @@ export default {
             pref: this.$store.state.pref,
             city: this.$store.state.city,
             detail: this.$store.state.detail,
+            checkIn:"",
+            checkOut:"",
+            DatePickerFormat:'yyyy-MM-dd'
         }
     },
     computed: {
@@ -162,6 +186,8 @@ export default {
             this.prefecture = this.$route.query.prefecture;
             this.cities = this.$route.query.cities;
             this.detailCity = this.$route.query.detailCity;
+            this.checkIn = moment(this.$route.query.checkIn).format('YYYY-M-D');
+            this.checkOut = moment(this.$route.query.checkOut).format('YYYY-M-D');
             if(this.$route.query.currentPage != undefined) {
                 this.currentPage = Number(this.$route.query.currentPage);
             }
@@ -173,6 +199,8 @@ export default {
                     middleClassCode: this.prefecture,
                     smallClassCode: this.cities,
                     detailClassCode: this.detailCity,
+                    checkinDate: this.checkIn,
+                    checkoutDate: this.checkOut
                 }
             })
             .then(response => {
@@ -186,10 +214,9 @@ export default {
     methods: {
         clickCallback: function (pageNum) {
             this.currentPage = Number(pageNum);//currentPageを更新する、Number型で取得する
-            this.$router.push({ path: ``,query:{ prefecture:this.prefecture, cities:this.cities, detailCity:this.detailCity, currentPage: this.currentPage}})
+            this.$router.push({ path: ``,query:{ prefecture:this.prefecture, cities:this.cities, detailCity:this.detailCity, checIn: this.checkIn, checkOut: this.checkOut, currentPage: this.currentPage}})
         },
         click() {
-
             if(this.prefecture == '') {
                 alert('県を入力してください')
             };
@@ -202,7 +229,7 @@ export default {
                 }
             };
             if(this.cities !== '') {
-                this.$router.push({ path: ``,query:{ prefecture: this.prefecture, cities: this.cities, detailCity: this.detailCity}})
+                this.$router.push({ path: ``,query:{ prefecture: this.prefecture, cities: this.cities, detailCity: this.detailCity, checIn: this.checkIn, checkOut: this.checkOut}})
                 axios.get(this.$store.state.url, {
                     params: {
                         applicationId: "1056638830656016957",
@@ -211,6 +238,8 @@ export default {
                         middleClassCode: this.prefecture,
                         smallClassCode: this.cities,
                         detailClassCode: this.detailCity,
+                        checkinDate: moment(this.checkIn).format('YYYY-M-D'),
+                        checkoutDate: moment(this.checkOut).format('YYYY-M-D')
                     }
                 })
                 .then(response => {
@@ -223,22 +252,15 @@ export default {
                 this.currentPage = 1;
             }
         }, 
-    },
+    }
 }
 </script>
 
-<style lang="scss">  
-    a{
-        text-decoration: none;
-    }
-    li{
-        list-style: none;
-    }
+<style lang="scss">
     .button{
         border: none;
         cursor: pointer;
         outline: none;
-        padding: 0;
         appearance: none;
         background: linear-gradient(135deg,#c00,#ec64a9);
         padding: 12px 8px;
@@ -262,7 +284,9 @@ export default {
         &-container{
             background-image: url(/images/search-bg.jpg);
             background-size: 100% auto;
-            padding: 80px 0;
+            background-size: cover;
+            background-repeat: none;
+            padding: 80px 0 100px;
 
             .top-title{
                 margin-bottom: 50px;
@@ -382,6 +406,7 @@ export default {
                             width: 40%;
                             padding: 5px 0;
                             font-size: 1rem;
+                            background:linear-gradient(#F89174, #FFC778);
                         }
                     }
                 }

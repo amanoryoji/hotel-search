@@ -34,7 +34,9 @@ module.exports = {
   ** Plugins to load before mounting the App
   */
   plugins: [
-    {src: '~/plugins/vuejs-paginate', ssr:false}
+    {src: '~/plugins/vuejs-paginate', ssr:false},
+    {src: '~/plugins/vuejs-datepicker', ssr: false },
+    {src: '~/plugins/moment.js', ssr: false },
   ],
 
   /*
@@ -55,7 +57,7 @@ module.exports = {
     }
   },
   env: {
-    baseUrl: 'https://app.rakuten.co.jp/services/api/Travel/SimpleHotelSearch/20170426'
-    
+    // baseUrl: 'https://app.rakuten.co.jp/services/api/Travel/SimpleHotelSearch/20170426'
+    baseUrl: 'https://app.rakuten.co.jp/services/api/Travel/VacantHotelSearch/20170426'
   }
 }
