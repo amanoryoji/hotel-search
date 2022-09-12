@@ -4,7 +4,7 @@
             <h3 class="top-title">あなたの旅をよりシンプルに。<br>全国各地の宿泊施設を検索しましょう！</h3>
 
             <div class="search-container__box">
-                <h4 class="search-container__box-title">目的地を選択</h4>
+                <h4 class="search-container__box-title">エリアを選択</h4>
 
                 <div class="search-input">
                     <label for="prefecture">都道府県<span class="required">必須</span></label>
@@ -37,8 +37,10 @@
                     </select>
                 </div>
 
-                <div class="search-input">
-                    <label for="chechIn">チェックイン日付</label>
+                <h4 class="search-container__box-title">日付を選択</h4>
+
+                <div class="search-input search-input__date">
+                    <label for="chechIn">チェックイン<span class="required">必須</span></label>
                     <no-ssr>
                         <datePicker
                         v-model="checkIn"
@@ -47,8 +49,8 @@
                     </no-ssr>
                 </div>
 
-                <div class="search-input">
-                    <label for="checkout">チェックアウト日付</label>
+                <div class="search-input search-input__date">
+                    <label for="checkout">チェックアウト<span class="required">必須</span></label>
                     <no-ssr>
                         <datePicker
                         v-model="checkOut"
@@ -79,11 +81,13 @@
             </no-ssr>
 
             <ul class="hotelContents">
-                <li v-for="hotel in getHotels">
-                    <p>{{ hotel.hotel[0].hotelBasicInfo.hotelName }} </p>
-                    <img v-bind:src="hotel.hotel[0].hotelBasicInfo.hotelImageUrl">
-                    <p>1泊あたりの最安値：{{ hotel.hotel[0].hotelBasicInfo.hotelMinCharge }}円</p>
-                    <p>レビュー平均：{{ hotel.hotel[0].hotelBasicInfo.reviewAverage }}</p>
+                <li v-for="hotel in getHotels" class="hotelContents-list">
+                    <p class="hotelContents-list__name">{{ hotel.hotel[0].hotelBasicInfo.hotelName }} </p>
+                    <div class="hotelContents-list__image">
+                        <img v-bind:src="hotel.hotel[0].hotelBasicInfo.hotelImageUrl">
+                    </div>
+                    <p class="hotelContents-list__price">1泊あたりの最安値：<span>{{ hotel.hotel[0].hotelBasicInfo.hotelMinCharge }}</span>円</p>
+                    <p class="hotelContents-list__review">★{{ hotel.hotel[0].hotelBasicInfo.reviewAverage }}</p>
                     <nuxt-link v-bind:to="{path: `detail`, query: { name: encodeURIComponent(JSON.stringify(hotel))}}" class="button">
                         詳細を見る
                     </nuxt-link>
@@ -105,7 +109,7 @@ export default {
             cities: "",
             detailCity: "",
             page:1,
-            perPage: 10,
+            perPage: 9,
             currentPage: 1,
             pref: this.$store.state.pref,
             city: this.$store.state.city,
@@ -245,6 +249,7 @@ export default {
                 .then(response => {
                     this.hotels.length = 0; 
                     this.hotels.push(response); 
+                    console.log(response)
                 })
                 .catch(error => {
                     alert('検索結果がありません。');
@@ -257,160 +262,280 @@ export default {
 </script>
 
 <style lang="scss">
-    .button{
-        border: none;
-        cursor: pointer;
-        outline: none;
-        appearance: none;
-        background: linear-gradient(135deg,#c00,#ec64a9);
-        padding: 12px 8px;
-        display: block;
-        width: 100%;
-        margin: 0 auto;
-        color: #fff;
-        font-size: 1.6rem;
-        font-weight: 700;
-        text-align: center;
-        transition: 0.2s;
+.button{
+    border: none;
+    cursor: pointer;
+    outline: none;
+    appearance: none;
+    background: linear-gradient(135deg,#c00,#ec64a9);
+    padding: 12px 8px;
+    display: block;
+    width: 100%;
+    margin: 0 auto;
+    color: #fff;
+    font-size: 1.6rem;
+    font-weight: 700;
+    text-align: center;
+    transition: 0.2s;
 
-        &:hover{
-            border-radius: 48px;
-            overflow: hidden;
-        }
+    @media screen and (max-width: 768px) {
+        padding: 6px 4px;
+        font-size: 15px;
     }
 
-    .search{
+    &:hover{
+        border-radius: 48px;
+        overflow: hidden;
+        opacity: 0.75;
+    }
+}
 
-        &-container{
-            background-image: url(/images/search-bg.jpg);
-            background-size: 100% auto;
-            background-size: cover;
-            background-repeat: none;
-            padding: 80px 0 100px;
+.search{
 
-            .top-title{
-                margin-bottom: 50px;
-                text-align: center;
-                color: #fff;
-                text-shadow: 0 3px 6px #000;
-                font-size: 40px;
+    &-container{
+        background-image: url(/images/search-bg.jpg);
+        background-size: 100% auto;
+        background-size: cover;
+        background-repeat: none;
+        padding: 80px 0 100px;
+
+        @media screen and (max-width: 768px) {
+            padding: 50px 0;
+        }
+
+        .top-title{
+            margin-bottom: 50px;
+            text-align: center;
+            color: #fff;
+            text-shadow: 0 3px 6px #000;
+            font-size: 40px;
+
+            @media screen and (max-width: 768px) {
+                margin-bottom: 20px;
+                font-size: 20px;
+            }
+        }
+
+        &__box{
+            background: rgba(255,255,255,.8);
+            width: 700px;
+            padding: 50px;
+            margin: 0 auto;
+            box-sizing: border-box;
+
+            @media screen and (max-width: 768px) {
+                width: 90%;
+                padding: 20px;
             }
 
-            &__box{
-                background: rgba(255,255,255,.8);
-                width: 700px;
-                padding: 50px;
-                margin: 0 auto;
-                box-sizing: border-box;
+            &-title{
+                margin-bottom: 40px;
+                font-size: 25px;
 
-                &-title{
-                    margin-bottom: 40px;
+                @media screen and (max-width: 768px) {
+                    margin-bottom: 20px;
+                    font-size: 20px;
                 }
+            }
 
-                .search-input{
-                    margin-bottom: 40px;
+            .search-input{
+                margin-bottom: 40px;
 
-                    label{
-                        display: block;
-                        margin-bottom: 20px;
+                @media screen and (max-width: 768px) {
+                    margin-bottom: 20px;
+                }
+                
+                &.search-input__date{
+                    display: inline-block;
+                    margin-right: 40px;
 
-                        span.required{
-                            width: 50px;
-                            margin-left: 10px;
-                            color: #d94f5d;
-                            border: 1px solid #d94f5d;
-                            border-radius: 10px;
-                            padding: 2px 8px;
-                            font-weight: 700;
-                        }
+                    @media screen and (max-width: 768px) {
+                        margin-right: 0;
                     }
 
-                    select{
+                    input{
                         width: 100%;
                         padding: 10px 10px 10px 10px;
                         box-sizing: border-box;
                     }
                 }
 
-                button{
-                    width: 60%;
+                label{
+                    display: block;
+                    margin-bottom: 20px;
+                    font-weight: 700;
+
+                    @media screen and (max-width: 768px) {
+                        font-size: 14px;
+                    }
+
+                    span.required{
+                        width: 50px;
+                        margin-left: 10px;
+                        color: #d94f5d;
+                        border: 1px solid #d94f5d;
+                        border-radius: 10px;
+                        padding: 2px 8px;
+                        font-weight: 700;
+                        font-size: 13px;
+
+                        @media screen and (max-width: 768px) {
+                            font-size: 11px;
+                        }
+                    }
+                }
+
+                select{
+                    width: 100%;
+                    padding: 10px 10px 10px 10px;
+                    box-sizing: border-box;
                 }
             }
 
-            &__result{
-                background-color: rgba(21,23,33,.05);
-                padding: 40px 0;
+            button{
+                width: 60%;
 
-                &-count{
-                    margin-bottom: 40px;
+                @media screen and (max-width: 768px) {
+                    width: 80%;
+                    margin-top: 10px;
+                }
+            }
+        }
+
+        &__result{
+            background-color: rgba(21,23,33,.05);
+            padding: 40px 0;
+
+            &-count{
+                margin-bottom: 40px;
+                text-align: center;
+                font-size: 30px;
+
+                @media screen and (max-width: 768px) {
+                    font-size: 20px;
+                }
+
+                span{
+                    font-size: 40px;
+                    color: #c00;
+
+                    @media screen and (max-width: 768px) {
+                        font-size: 25px;
+                    }
+                }
+            }
+            
+            .hotelContents{
+                display: flex;
+                flex-wrap: wrap;
+                gap: 40px 5%;
+                width: 90%;
+                margin: 0 auto;
+                padding: 0;
+
+                @media screen and (max-width: 1000px) {
+                    gap: 40px 10%;
+                    
+                }
+
+                @media screen and (max-width: 768px) {
+                    gap: 30px 0;
+                    margin: 0 auto 30px;
+                }
+
+                &-list{
+                    width: 30%;
                     text-align: center;
-                    font-size: 30px;
 
-                    span{
-                        font-size: 40px;
-                        color: #c00;
+                    @media screen and (max-width: 1000px) {
+                        width: 45%;
                     }
-                }
 
-                .pagination{
-                    display: flex;
-                    justify-content: center;
-                    margin-bottom: 60px;
-
-                    li{
-                        margin-right: 30px;
-                        padding: 0 10px;
-                        color: #95999e;
-
-                        &.active{
-                            color: #c00;
-                            
-                            a{
-                                font-weight: 700;
-                            }
-                        }
-
-                        &:last-of-type{
-                            margin-right: 0;
-                        }
-
-                        a{
-                            font-size: 23px;
-                        }
+                    @media screen and (max-width: 768px) {
+                        width: 100%;
                     }
-                }
-                
-                ul.hotelContents{
-                    display: flex;
-                    justify-content: space-between;
-                    flex-wrap: wrap;
-                    width: 90%;
-                    margin: 0 auto;
 
-                    li{
-                        width: 30%;
-                        margin-bottom: 40px;
-                        text-align: center;
-                        
-                        &:last-of-type{
-                            margin-bottom: 0;
-                        }
+                    &__name{
+                        margin-bottom: 10px;
+                        color: #285e97;
+                        font-weight: 700;
+                        font-size: 18px;
+                    }
+                    
+                    &__image{
+                        margin-bottom: 10px;
 
                         img{
-                            width: 300px;
-                            height: 169px;
-                            object-fit: contain;
+                            width: 100%;
+                            height: 300px;
+                            object-fit: cover;
                         }
+                    }
 
-                        .button{
-                            width: 40%;
-                            padding: 5px 0;
-                            font-size: 1rem;
-                            background:linear-gradient(#F89174, #FFC778);
+                    &__price{
+                        margin-bottom: 5px;
+
+                        span{
+                            font-size: 20px;
+                            color: #f00;
                         }
+                    }
+
+                    &__review{
+                        margin-bottom: 5px;
+                        color: #ff5a00;
+                    }
+
+                    .button{
+                        width: 40%;
+                        padding: 5px 0;
+                        font-size: 1rem;
+                        background:linear-gradient(#F89174, #FFC778);
+
+                        @media screen and (max-width: 768px) {
+                            width: 50%;
+                        }
+                    }
+                }
+            }
+
+            .pagination{
+                display: flex;
+                justify-content: center;
+                margin-bottom: 60px;
+                padding-left: 0;
+
+                @media screen and (max-width: 768px) {
+                    margin-bottom: 30px;
+                }
+
+                li{
+                    margin-right: 30px;
+                    padding: 0 10px;
+                    color: #95999e;
+
+                    @media screen and (max-width: 768px) {
+                        margin-right: 20px;
+                    }
+
+                    &.active{
+                        color: #c00;
+                        
+                        a{
+                            font-weight: 700;
+                        }
+                    }
+
+                    &:last-of-type{
+                        margin-right: 0;
+                    }
+
+                    a{
+                        font-size: 23px;
                     }
                 }
             }
         }
     }
+}
 </style>
