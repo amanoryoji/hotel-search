@@ -1,5 +1,5 @@
 <template>
-    <div class="search">
+    <div class="search" id="search">
         <div class="search-container">
             <h3 class="top-title">あなたの旅をよりシンプルに。<br>全国各地の宿泊施設を検索しましょう！</h3>
 
@@ -27,7 +27,7 @@
                 </div>
 
                 <div
-                v-if="cities == 'sapporo' || cities == 'tokyo'" class="search-input">
+                v-if="cities == 'sapporo' || cities == 'tokyo' || cities == 'nagoyashi' || cities == 'shi'" class="search-input">
                     <label for="detailCity">地区<span class="required">必須</span></label>
                     <select id="detailCity" v-model="detailCity" v-bind:disabled="cities == ''">
                         <option value="">地区を選択</option>
@@ -63,36 +63,38 @@
             </div>
         </div>
 
-        <div v-if="hotels != ''" class="search-container__result" id="result">
-            <h4 class="search-container__result-count">
-                検索件数：<span>{{ hotels[0].data.hotels.length }}</span>件
-            </h4>
+        <div id="result">
+            <div v-if="hotels != ''" class="search-container__result">
+                <h4 class="search-container__result-count">
+                    検索件数：<span>{{ hotels[0].data.hotels.length }}</span>件
+                </h4>
 
-            <no-ssr>
-                <paginate
-                v-model="currentPage"
-                :page-count="getPageCount"
-                :click-handler="clickCallback"
-                :prev-text="'<'"
-                :next-text="'>'"
-                :hide-prev-next=true
-                :container-class="'pagination'"
-                ></paginate>
-            </no-ssr>
+                <no-ssr>
+                    <paginate
+                    v-model="currentPage"
+                    :page-count="getPageCount"
+                    :click-handler="clickCallback"
+                    :prev-text="'<'"
+                    :next-text="'>'"
+                    :hide-prev-next=true
+                    :container-class="'pagination'"
+                    ></paginate>
+                </no-ssr>
 
-            <ul class="hotelContents">
-                <li v-for="hotel in getHotels" class="hotelContents-list">
-                    <p class="hotelContents-list__name">{{ hotel.hotel[0].hotelBasicInfo.hotelName }} </p>
-                    <div class="hotelContents-list__image">
-                        <img v-bind:src="hotel.hotel[0].hotelBasicInfo.hotelImageUrl">
-                    </div>
-                    <p class="hotelContents-list__price">1泊あたりの最安値：<span>{{ hotel.hotel[0].hotelBasicInfo.hotelMinCharge }}</span>円</p>
-                    <p class="hotelContents-list__review">★{{ hotel.hotel[0].hotelBasicInfo.reviewAverage }}</p>
-                    <nuxt-link v-bind:to="{path: `detail`, query: { name: encodeURIComponent(JSON.stringify(hotel))}}" class="button">
-                        詳細を見る
-                    </nuxt-link>
-                </li>
-            </ul>
+                <ul class="hotelContents">
+                    <li v-for="hotel in getHotels" class="hotelContents-list">
+                        <p class="hotelContents-list__name">{{ hotel.hotel[0].hotelBasicInfo.hotelName }} </p>
+                        <div class="hotelContents-list__image">
+                            <img v-bind:src="hotel.hotel[0].hotelBasicInfo.hotelImageUrl">
+                        </div>
+                        <p class="hotelContents-list__price">1泊あたりの最安値：<span>{{ hotel.hotel[0].hotelBasicInfo.hotelMinCharge }}</span>円</p>
+                        <p class="hotelContents-list__review">★{{ hotel.hotel[0].hotelBasicInfo.reviewAverage }}</p>
+                        <nuxt-link v-bind:to="{path: `detail`, query: { name: encodeURIComponent(JSON.stringify(hotel))}}" class="button">
+                            詳細を見る
+                        </nuxt-link>
+                    </li>
+                </ul>
+            </div>
         </div>
     </div>
 </template>
@@ -116,7 +118,7 @@ export default {
             detail: this.$store.state.detail,
             checkIn:"",
             checkOut:"",
-            DatePickerFormat:'yyyy-MM-dd'
+            DatePickerFormat:'yyyy-MM-dd',
         }
     },
     computed: {
@@ -146,7 +148,7 @@ export default {
             get:function() {
                 const self = this;
                 return self.detail.filter(function (item) {
-                    return ((item.city == self.cities));
+                    return ((item.city == self.cities && item.pref == self.prefecture));
                 })
             },
             set: function(v) {
@@ -233,7 +235,7 @@ export default {
                 }
             };
             if(this.cities !== '') {
-                this.$router.push({ path: ``,query:{ prefecture: this.prefecture, cities: this.cities, detailCity: this.detailCity, checIn: this.checkIn, checkOut: this.checkOut}})
+                this.$router.push({ path: `/`,query:{ prefecture: this.prefecture, cities: this.cities, detailCity: this.detailCity, checIn: this.checkIn, checkOut: this.checkOut}})
                 axios.get(this.$store.state.url, {
                     params: {
                         applicationId: "1056638830656016957",
@@ -249,11 +251,18 @@ export default {
                 .then(response => {
                     this.hotels.length = 0; 
                     this.hotels.push(response); 
-                    console.log(response)
                 })
                 .catch(error => {
                     alert('検索結果がありません。');
                 })
+                let search = document.getElementById('search');
+                let resultHeight = search.getBoundingClientRect();
+                console.log(resultHeight.bottom + window.pageYOffset)
+                window.scrollTo({
+                    // top:resultHeight.bottom + window.pageYOffset + 100000,
+                    top:1000,
+                    behavior:'smooth'
+                });
                 this.currentPage = 1;
             }
         }, 
@@ -291,6 +300,7 @@ export default {
 }
 
 .search{
+    height: 100vh;
 
     &-container{
         background-image: url(/images/search-bg.jpg);
